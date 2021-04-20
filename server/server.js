@@ -66,9 +66,25 @@ const songList = [
     // }
 ];
 
+//do we need this once we write the router GET?
+// app.get('/artist', (req, res) => {
+//     console.log(`In /artist GET`);
+//     res.send(artistList);
+// });
+
+//router is currently not defined so until I move it 
+//to a module I'm using app instead
+//GET route for artist table in jazzy_sql database
 app.get('/artist', (req, res) => {
-    console.log(`In /songs GET`);
-    res.send(artistList);
+    let queryText = 'SELECT * FROM "artist" ORDER BY "birthdate" DESC;';
+    pool.query(queryText)
+        .then(dbResult => {
+            res.send(dbResult.rows);
+        })
+        .catch((error) => {
+            console.log(`Error making query ${queryText}`, error);
+            res.sendStatus(500);
+        });
 });
 
 app.post('/artist', (req, res) => {
@@ -76,9 +92,22 @@ app.post('/artist', (req, res) => {
     res.sendStatus(201);
 });
 
+// app.get('/song', (req, res) => {
+//     console.log(`In /songs GET`);
+//     res.send(songList);
+// });
+
+//GET route for song table in jazzy_sql database
 app.get('/song', (req, res) => {
-    console.log(`In /songs GET`);
-    res.send(songList);
+    let queryText = 'SELECT * FROM "song" ORDER BY "title";';
+    pool.query(queryText)
+        .then(dbResult => {
+            res.send(dbResult.rows);
+        })
+        .catch((error) => {
+            console.log(`Error making query ${queryText}`, error);
+            res.sendStatus(500);
+        });
 });
 
 app.post('/song', (req, res) => {

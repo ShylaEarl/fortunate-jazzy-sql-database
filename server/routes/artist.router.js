@@ -15,15 +15,25 @@ router.get('/', (req, res) => {
         });
 });
 
-//TODO -- write artist POST route 
-// app.post('/artist', (req, res) => {
-//     artistList.push(req.body);
-//     res.sendStatus(201);
-// });
-
-// router.post('/', (req, res) => {
-
-// });
+router.post('/', (req, res) => {
+    console.log('in artist POST', req.body);
+    const artistToAdd = req.body;
+    const queryString = `INSERT INTO "artist" ("name", "birthdate")
+                        VALUES ($1, $2);`;
+    const queryArguments = [
+        artistToAdd.name,
+        artistToAdd.birthdate
+    ];
+    pool.query(queryString, queryArguments)
+    //get back DB results
+    .then(function (dbResults) {
+        res.sendStatus(201);
+    })
+    .catch(function (error) {
+        console.log('in artist POST', error);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;
 

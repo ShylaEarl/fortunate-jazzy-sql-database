@@ -96,7 +96,7 @@ function renderArtists( listOfArtists ) {
         $('#artistTableBody').append(`
                 <tr>
                     <td>${artist.name}</td>
-                    <td>${artist.birthdate}</td>
+                    <td>${artist.birthdate.slice(0,10)}</td>
                 </tr>`
         );
     }
@@ -111,7 +111,7 @@ function renderSongs(listOfSongs) {
                 <tr>
                     <td>${song.title}</td>
                     <td>${song.length}</td>
-                    <td>${song.released}</td>
+                    <td>${song.released.slice(0,10)}</td>
                 </tr>`
             );
     }

@@ -15,12 +15,27 @@ router.get('/', (req, res) => {
         });
 });
 
-// app.post('/song', (req, res) => {
-//     songList.push(req.body);
-//     res.sendStatus(201);
-// });
-
-//router.post
+//POST route for song table to recieve new songs from client
+router.post('/', (req, res) => {
+    console.log('req.body in song POST', req.body);
+    const songToAdd = req.body;
+    const queryString = `INSERT INTO "song" ("title", "length", "released")
+                        VALUES ($1, $2, $3);`;
+                        //VALUES above, using placeholders to prevent SQL injection
+    const queryArguments = [
+        songToAdd.title, 
+        songToAdd.length, 
+        songToAdd.released];
+    pool.query(queryString, queryArguments)
+    //get back DB results
+    .then(function (dbResults){
+        res.sendStatus(201);
+    })
+    .catch(function (error) {
+        console.log('error in song POST', error);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;
 
